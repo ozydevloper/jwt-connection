@@ -14,7 +14,7 @@ export class UsersService {
     return this.prisma.users.findMany({ where });
   }
 
-  async create(data: Prisma.UsersCreateInput): Promise<Users | null> {
+  async create(data: Prisma.UsersCreateInput): Promise<Users> {
     return this.prisma.users.create({ data });
   }
 

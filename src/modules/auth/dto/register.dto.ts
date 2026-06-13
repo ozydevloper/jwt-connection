@@ -2,7 +2,6 @@ import { ApiProperty } from '@nestjs/swagger';
 import {
   IsEmail,
   IsNotEmpty,
-  IsOptional,
   IsString,
   MaxLength,
   MinLength,
@@ -19,8 +18,7 @@ export class RegisterDto {
   @IsString()
   @IsNotEmpty()
   @IsEmail()
-  @IsOptional()
-  email: string | undefined;
+  email!: string;
 
   @ApiProperty({ example: 'mypassword123', minLength: 8, maxLength: 64 })
   @IsString()
