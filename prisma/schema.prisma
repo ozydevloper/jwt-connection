@@ -23,7 +23,7 @@ model Users {
   name String
   role UserRoleEnum @default(USER)
   
-  verificationToken String?
+  verificationToken String? @unique
   verificationTokenExpiresAt DateTime?
 
   resetToken String?
