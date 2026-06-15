@@ -13,6 +13,6 @@ export class CryptoService {
   }
 
   async compareHash(password: string, hashPassword: string) {
-    return bcrypt.compare(password, hashPassword);
+    return compare(password, hashPassword);
   }
 }

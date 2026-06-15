@@ -14,7 +14,7 @@ export class EmailService {
   async sendVerificatoinEmail(email: string, token: string) {
     const verificationUrl = `${this.appUrl}/api/auth/verify-email?token=${token}`;
     return this.resend.emails.send({
-      from: 'ozydeveloepr@gmail.com',
+      from: 'onboarding@resend.dev',
       to: email,
       subject: 'Verify your email.',
       html: `
@@ -27,7 +27,7 @@ export class EmailService {
   async sendResetPasswordEmail(email: string, token: string) {
     const resetPasswordUrl = `${this.appUrl}/api/auth/reset-password?token=${token}`;
     return this.resend.emails.send({
-      from: 'ozydeveloepr@gmail.com',
+      from: 'onboarding@resend.dev',
       to: email,
       subject: 'Reset password.',
       html: `

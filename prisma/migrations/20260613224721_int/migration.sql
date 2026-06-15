@@ -39,6 +39,9 @@ CREATE UNIQUE INDEX "Users_id_key" ON "Users"("id");
 CREATE UNIQUE INDEX "Users_email_key" ON "Users"("email");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "Users_verificationToken_key" ON "Users"("verificationToken");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "Tasks_id_key" ON "Tasks"("id");
 
 -- AddForeignKey

@@ -140,13 +140,14 @@ export class AuthService {
   }
 
   async verifyEmail(token: string, response: Response) {
+    if (!token) throw new UnauthorizedException('Invalid verification token.');
     const user = await this.usersService.findOne({ verificationToken: token });
     if (!user || !user.verificationToken)
       throw new BadRequestException('Invalid verification token.');
 
     if (
       user.verificationTokenExpiresAt &&
-      user.verificationTokenExpiresAt > new Date()
+      user.verificationTokenExpiresAt < new Date()
     )
       throw new BadRequestException(
         'Verification token has expired. Please create a new one',
