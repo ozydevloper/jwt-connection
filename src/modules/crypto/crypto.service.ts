@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { hash, compare, genSalt } from 'bcryptjs';
-import { createHash } from 'crypto';
+import { createHash, randomBytes } from 'crypto';
 @Injectable()
 export class CryptoService {
   async generateHash(password: string) {
@@ -10,6 +10,10 @@ export class CryptoService {
 
   generateHex(data: string) {
     return createHash('sha256').update(data).digest('hex');
+  }
+
+  generateRandomByte() {
+    return randomBytes(32).toString('hex');
   }
 
   async compareHash(password: string, hashPassword: string) {

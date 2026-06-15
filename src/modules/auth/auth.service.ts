@@ -33,9 +33,7 @@ export class AuthService {
 
     const passwordHash = await this.cryptoService.generateHash(password);
 
-    const verificationToken = this.cryptoService.generateHex(
-      `${name}:${email}`,
-    );
+    const verificationToken = this.cryptoService.generateRandomByte();
     const verificationTokenExpiresAt = new Date(
       Date.now() + 1 * 60 * 60 * 1000,
     );
@@ -175,6 +173,60 @@ export class AuthService {
         name: user.name,
         role: user.role,
       },
+    };
+  }
+
+  async forgotPassword(email: string) {
+    const user = await this.usersService.findOne({ email });
+
+    if (!user)
+      return {
+        message:
+          'if an account with that email exist, a reset link has been send',
+      };
+
+    const resetPasswordToken = this.cryptoService.generateRandomByte();
+    const resetPasswordTokenExpiresAt = new Date(Date.now() + 60 * 60 * 1000);
+
+    await this.usersService.update(
+      { email: user.email },
+      { resetPasswordToken, resetPasswordTokenExpiresAt },
+    );
+
+    void this.emailService.sendResetPasswordEmail(
+      user.email,
+      resetPasswordToken,
+    );
+    return {
+      message:
+        'if an account with that email exist, a reset link has been send',
+    };
+  }
+
+  async resetPassword(resetPasswordToken: string, newPassword: string) {
+    if (!resetPasswordToken) throw new UnauthorizedException('invalid token.');
+    const user = await this.usersService.findOne({ resetPasswordToken });
+    if (!user || !user.resetPasswordToken || !user.resetPasswordTokenExpiresAt)
+      throw new UnauthorizedException('invalid token.');
+
+    if (user.resetPasswordTokenExpiresAt < new Date())
+      throw new UnauthorizedException(
+        'Reset password ha been expired, please create new One',
+      );
+
+    const passwordHash = await this.cryptoService.generateHash(newPassword);
+
+    await this.usersService.update(
+      { id: user.id },
+      {
+        resetPasswordToken: null,
+        resetPasswordTokenExpiresAt: null,
+        passwordHash,
+      },
+    );
+
+    return {
+      message: 'reset password success',
     };
   }
 

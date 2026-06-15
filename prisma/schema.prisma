@@ -26,6 +26,9 @@ model Users {
   verificationToken String? @unique
   verificationTokenExpiresAt DateTime?
 
+  resetPasswordToken String? @unique
+  resetPasswordTokenExpiresAt DateTime?
+
   resetToken String?
   refreshTokenHash String?
   resetTokenExpiresAt DateTime?
